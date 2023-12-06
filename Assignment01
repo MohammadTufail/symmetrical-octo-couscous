@@ -1,7 +1,13 @@
+/*
+Name: MohammadTufail A Akkalkot
+Project: To implement a circular queue
+Date: 06/12/2023
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 10
+#define MAX_SIZE 5
 
 typedef struct
 {
@@ -36,7 +42,7 @@ void read_queue(CircularQueue* queue)
     }
     else
     {
-        printf("Read data: %d\n", queue->queue[queue->front]);
+        printf("The data in the queue : %d\n", queue->queue[queue->front]);
 
         if (queue->front == queue->rear)
         {
@@ -63,11 +69,13 @@ int main()
     write_queue(myQueue, 1);
     write_queue(myQueue, 2);
     write_queue(myQueue, 3);
-
-    read_queue(myQueue);
-    read_queue(myQueue);
-
     write_queue(myQueue, 4);
+    write_queue(myQueue, 5);
+
+    read_queue(myQueue);
+    read_queue(myQueue);
+
+    write_queue(myQueue, 6);
 
     read_queue(myQueue);
     read_queue(myQueue);
