@@ -73,12 +73,14 @@ void write_queue(circularqueue* queue, int data)                    //function t
     queue->queue[queue->rear] = data;
 }
 
-void clear_queue(circularqueue* queue) {
+void clear_queue(circularqueue* queue) 
+{
     free(queue->queue);
     free(queue);
 }
 
-int main() {
+int main() 
+{
     int capacity;
     printf("Enter the capacity of the queue\n");
     scanf("%d", &capacity);
