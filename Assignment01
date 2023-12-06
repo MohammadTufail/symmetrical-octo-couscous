@@ -9,9 +9,9 @@ Date: 06/12/2023
 
 typedef struct                                  //creating and renaming a strucuture
 {
-    int *queue;                                 //                         
-    int front, rear;                             strucutre members
-    int capacity ;                             //
+    int *queue;                                                          
+    int front, rear;                             //strucuture members
+    int capacity ;                             
 } circularqueue;                               //new name of struct
 
 circularqueue* createqueue(int capacity)                  //function to allocate the memory for queue
