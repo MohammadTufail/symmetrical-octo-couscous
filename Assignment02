@@ -1,1 +1,42 @@
-/
+/*
+Name: MohammadTufail A Akkalkot
+Project: To extract payload from one function to other
+Date: 07/12/2023
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+char* extractPayload(char* inputArray, size_t inputSize, size_t* output_size)     // Function to extract the payload from the given data 
+{
+    *output_size = inputSize - 2;                                                 // To know the size of payload
+
+    char* extractedPayload = malloc(*output_size);                                //Allocating memory dynamically to payload
+
+    for (size_t i = 2; i < inputSize; ++i)                                         //copying the data present in the array 
+    {
+        extractedPayload[i - 2] = inputArray[i];
+    }
+
+    return extractedPayload;
+}
+
+int main() 
+{
+    char input_array[] = {00, 01, 01, 01, 02, 03, 04, 05, 06, 07};       //input array
+    size_t input_size = sizeof(input_array) / sizeof(input_array[0]);            // getting the size of array
+
+    size_t output_size;
+    char* extractedPayload = extractPayload(input_array, input_size, &output_size);  //function call and created variable to store the payload from called function
+
+    printf("Extracted Payload from function : ");                                                 // To display the extracted payload
+    for (size_t i = 0; i < output_size; ++i) 
+    {
+        printf("%02X ", extractedPayload[i]);
+    }
+    printf("\n");
+    free(extractedPayload);                                                       //freeing the memory to avoid memory leak
+
+    return 0;
+}
