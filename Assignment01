@@ -1,108 +1,158 @@
 /*
 Name: MohammadTufail A Akkalkot
 Project: To implement a circular queue
-Date: 06/12/2023
+Date: 08/12/2023
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct                                  //creating and renaming a strucuture
-{
-    int *queue;                                                          
-    int front, rear;                             //strucuture members
-    int capacity ;                             
-} circularqueue;                               //new name of struct
+#define MAX_SIZE 5
 
-circularqueue* createqueue(int capacity)                  //function to allocate the memory for queue
-{
-    circularqueue* queue = (circularqueue*)malloc(sizeof(circularqueue));
-    queue->capacity = capacity;
-    queue->queue = (int*)malloc(sizeof(int) * capacity);
-    queue->front = queue->rear = -1; 
-    return queue;
-}
+typedef struct 
+{                                  //Queue structure
+    int front, rear;
+    int size;
+    int *array;
+} Circularqueue;
 
-int is_empty(circularqueue* queue)                         //function to check queue is empty or not 
-{
-    return queue->front == -1; 
-}
-
-int is_full(circularqueue* queue)                         //function to check the queue is full 
-{
-    return (queue->rear + 1) % queue->capacity == queue->front;
-}
-
-void read_queue(circularqueue* queue)                           //function to read the elements in the queue
-{
-    if (is_empty(queue)) 
+Circularqueue* initializequeue()  
+{                                                                          //function to initializeQueue
+    Circularqueue* queue = (Circularqueue*)malloc(sizeof(Circularqueue));
+    if (queue == NULL)  
     {
-        printf("Queue is empty\n");
-    } 
-    else 
-    {
-        printf("The elements in queue is : %d\n", queue->queue[queue->front]);
-
-        if (queue->front == queue->rear)                       
-        {
-            queue->front = queue->rear = -1; 
-        }
-        else 
-        {
-            queue->front = (queue->front + 1) % queue->capacity;
-        }
-    }   
-}
-
-void write_queue(circularqueue* queue, int data)                    //function to write the elemnts in the queue
-{
-    if (is_full(queue)) 
-    {
-        queue->front = (queue->front + 1) % queue->capacity;
-    }   
-
-    if (is_empty(queue)) 
-    {
-    queue->front = queue->rear = 0;
-    } 
-    else 
-    {
-        queue->rear = (queue->rear + 1) % queue->capacity;
+        printf("Memory allocation failed.\n");
+        exit(EXIT_FAILURE);
     }
 
-    queue->queue[queue->rear] = data;
+    queue->front = queue->rear = -1;
+    queue->size = MAX_SIZE;
+    queue->array = (int*)malloc(MAX_SIZE * sizeof(int));
+    if (queue->array == NULL) 
+    {
+        printf("Memory allocation failed.\n");
+        free(queue);
+        exit(EXIT_FAILURE);
+    }
+
+    return queue;
+}
+int isEmpty(Circularqueue* queue) 
+                                                 {                    //function to check queue is empty or not
+    return (queue->front == -1);
 }
 
-void clear_queue(circularqueue* queue) 
+int isFull(Circularqueue* queue) 
+{                                                                      //function to check queue is full
+    return ((queue->rear + 1) % queue->size == queue->front);
+}
+
+void writeQueue(Circularqueue* queue, int data) 
 {
-    free(queue->queue);
-    free(queue);
+    if (isFull(queue))                                                //function to write the data into the queue
+    {
+        queue->front = (queue->front + 1) % queue->size;
+    }
+    queue->rear = (queue->rear + 1) % queue->size;
+
+    queue->array[queue->rear] = data;
+    if (isEmpty(queue)) {
+        queue->front = queue->rear;
+    }
+}
+
+
+int readQueue(Circularqueue* queue)                             //function to read from the queue
+{
+    int data = -1;
+    if (!isEmpty(queue)) {
+        data = queue->array[queue->front];
+
+        if (queue->front == queue->rear) 
+        {
+            queue->front = queue->rear = -1;
+        } else 
+        {
+            queue->front = (queue->front + 1) % queue->size;
+        }
+    }
+
+    return data;
+}
+
+void clearQueue(Circularqueue* queue) 
+{
+    queue->front = queue->rear = -1;
+}
+
+void printQueue(Circularqueue* queue)         //function to printqueue 
+{
+    if (isEmpty(queue)) {
+        printf("Queue is empty.\n");
+        return;
+    }
+
+    printf("Queue elements: ");
+    int i = queue->front;
+    do {
+        printf("%d ", queue->array[i]);
+        i = (i + 1) % queue->size;
+    } while (i != (queue->rear + 1) % queue->size);
+    printf("\n");
 }
 
 int main() 
 {
-    int capacity;
-    printf("Enter the capacity of the queue\n");
-    scanf("%d", &capacity);
-    circularqueue* myqueue = createqueue(capacity);
+    Circularqueue* queue = initializequeue();
+    int num;
+    printf("Enter number to be added to queue: ");
+    scanf("%d", &num);
+    writeQueue(queue, num);
 
-    write_queue(myqueue, 10);
-    write_queue(myqueue, 20);
-    write_queue(myqueue, 30);
-    write_queue(myqueue, 40);
-    write_queue(myqueue, 50);
+    printf("Enter number to be added to queue: ");
+    scanf("%d", &num);
+    writeQueue(queue, num);
 
-    write_queue(myqueue, 60);
+    printf("Enter number to be added to queue: ");
+    scanf("%d", &num);
+    writeQueue(queue, num);
 
-    for(int i=0; i<capacity; i++)
-    {
-    read_queue(myqueue);
-    }
+    printf("Enter number to be added to queue: ");
+    scanf("%d", &num);
+    writeQueue(queue, num);
 
+    printf("Enter number to be added to queue: ");
+    scanf("%d", &num);
+    writeQueue(queue, num);
 
-    clear_queue(myqueue);
+    printQueue(queue);
+
+    int data = readQueue(queue);
+    printf("Read from queue: %d\n", data);
+    printQueue(queue);
+
+    printf("Enter number to be added to queue: ");
+    scanf("%d", &num);
+    writeQueue(queue, num);
+
+    printf("Enter number to be added to queue: ");
+    scanf("%d", &num);
+    writeQueue(queue, num);
+
+    printf("Enter number to be added to queue: ");
+    scanf("%d", &num);
+    writeQueue(queue, num);
+
+    printQueue(queue);
+
+    clearQueue(queue);
+    printQueue(queue);
+
+    free(queue->array);
+    free(queue);
 
     return 0;
 }
+
 
 
