@@ -14,7 +14,7 @@ char* extractPayload(char* inputArray, size_t inputSize, size_t* output_size)   
 
     char* extractedPayload = malloc(*output_size);                                //Allocating memory dynamically to payload
 
-    for (size_t i = 2; i < inputSize; ++i)                                         //copying the data present in the array 
+    for (size_t i = 2; i < inputSize; ++i)                                         //copying the data present in array
     {
         extractedPayload[i - 2] = inputArray[i];
     }
